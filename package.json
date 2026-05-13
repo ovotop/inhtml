@@ -1,0 +1,35 @@
+{
+  "name": "@ovotop/inhtml",
+  "version": "0.1.1",
+  "description": "Give AI a screen — rich HTML output from CLI conversations",
+  "main": "./dist/cli.js",
+  "bin": {
+    "inhtml": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "keywords": [
+    "ai",
+    "html",
+    "cli",
+    "claude",
+    "visualization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  }
+}

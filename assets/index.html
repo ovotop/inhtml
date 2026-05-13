@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>in-html</title>
+<style>
+  :root {
+    --ivory:    #FAF9F5;
+    --slate:    #141413;
+    --clay:     #D97757;
+    --clay-d:   #B85C3E;
+    --oat:      #E3DACC;
+    --olive:    #788C5D;
+    --rust:     #B04A3F;
+    --gray-50:  #F0EEE6;
+    --gray-200: #D1CFC5;
+    --gray-500: #87867F;
+    --gray-800: #3D3D3A;
+    --white:    #FFFFFF;
+
+    --serif: ui-serif, Georgia, serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --border: 1.5px solid var(--gray-200);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; background: var(--ivory); color: var(--slate);
+    font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+
+  .app { height: 100vh; display: flex; flex-direction: column; }
+
+  /* ── Header ── */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; height: 50px;
+    border-bottom: var(--border); background: var(--white); flex-shrink: 0;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 9px;
+    font-family: var(--mono); font-size: 13px;
+    letter-spacing: 0.02em; color: var(--slate); font-weight: 600;
+  }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gray-200); flex-shrink: 0;
+    transition: background .3s;
+  }
+  .live-dot[data-live] {
+    background: var(--olive);
+    animation: breathe 2.4s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .artifact-count {
+    font-family: var(--mono); font-size: 11px; color: var(--gray-500);
+    background: var(--gray-50); border: var(--border);
+    border-radius: 999px; padding: 3px 10px;
+  }
+  .icon-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em;
+    color: var(--gray-800); background: none; border: var(--border);
+    border-radius: 999px; padding: 5px 13px; cursor: pointer;
+    transition: border-color .12s, background .12s;
+  }
+  .icon-btn:hover { border-color: var(--gray-500); background: var(--gray-50); }
+
+  /* ── Status Indicator ── */
+  .status-indicator {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; color: var(--gray-500);
+    background: var(--gray-50); border: var(--border);
+    border-radius: 999px; padding: 3px 10px;
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gray-200); flex-shrink: 0;
+    transition: background .3s;
+  }
+  .status-dot[data-state="thinking"] {
+    background: var(--clay);
+    animation: breathe 2.4s ease-in-out infinite;
+  }
+  .status-dot[data-state="done"] { background: var(--olive); }
+  .status-dot[data-state="error"] { background: var(--rust); }
+
+  /* ── Chat stream ── */
+  .stream {
+    flex: 1; overflow-y: auto;
+    padding: 18px 24px 8px;
+    display: flex; flex-direction: column; gap: 6px;
+    scroll-behavior: smooth;
+    max-width: 720px; margin: 0 auto; width: 100%; min-height: 0;
+  }
+  .stream::-webkit-scrollbar { width: 8px; }
+  .stream::-webkit-scrollbar-track { background: var(--gray-50); }
+  .stream::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+  .stream::-webkit-scrollbar-thumb:hover { background: var(--gray-500); }
+
+  /* ── Messages ── */
+  .msg-user {
+    align-self: flex-end;
+    max-width: 80%;
+    background: var(--clay);
+    color: var(--white);
+    padding: 10px 16px;
+    border-radius: 16px 16px 4px 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  .msg-ai {
+    align-self: flex-start;
+    max-width: 85%;
+    background: var(--white);
+    border: var(--border);
+    padding: 12px 18px;
+    border-radius: 16px 16px 16px 4px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-800);
+    word-break: break-word;
+  }
+  .msg-ai:empty { display: none; }
+  .msg-time {
+    font-family: var(--mono); font-size: 10px; color: var(--gray-500);
+    margin-top: 4px; opacity: 0.7;
+  }
+  .msg-user .msg-time { text-align: right; color: rgba(255,255,255,0.6); }
+
+  .day-sep { display: flex; align-items: center; gap: 12px; padding: 4px 0 2px; }
+  .day-sep span {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--gray-500); white-space: nowrap;
+  }
+  .day-sep::before, .day-sep::after { content: ""; flex: 1; height: 1px; background: var(--gray-200); }
+
+  /* ── Empty state ── */
+  .empty {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; padding: 60px 32px; text-align: center;
+  }
+  .empty-icon {
+    width: 44px; height: 44px; background: var(--gray-50);
+    border: var(--border); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
+  }
+  .empty-title { font-family: var(--serif); font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
+  .empty-sub { font-size: 13px; color: var(--gray-500); line-height: 1.6; max-width: 300px; }
+  .empty-sub code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--gray-50); border: var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--slate);
+  }
+
+  /* ── Card ── */
+  .stream-card {
+    align-self: stretch;
+    background: var(--white); border: var(--border); border-radius: var(--radius);
+    padding: 13px 18px 12px; cursor: pointer;
+    display: flex; flex-direction: column; gap: 7px;
+    transition: border-color .12s, box-shadow .12s, transform .08s;
+    position: relative; overflow: hidden;
+    flex-shrink: 0;
+  }
+  .stream-card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: transparent; transition: background .12s;
+    border-radius: 10px 0 0 10px;
+  }
+  .stream-card:hover { border-color: var(--clay); box-shadow: 0 2px 12px rgba(20,20,19,.07); }
+  .stream-card:hover::before { background: var(--clay); }
+  .stream-card:active { transform: scale(0.997); }
+
+  .stream-card .card-prompt {
+    font-size: 12px; color: var(--gray-500); font-style: italic;
+    line-height: 1.4; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
+  .stream-card .card-row { display: flex; align-items: center; gap: 10px; }
+  .stream-card .card-title {
+    font-size: 14.5px; font-weight: 500; color: var(--slate);
+    line-height: 1.35; flex: 1; overflow: hidden;
+    white-space: nowrap; text-overflow: ellipsis;
+  }
+  .stream-card .card-meta { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+  .stream-card .card-time { font-family: var(--mono); font-size: 11px; color: var(--gray-500); }
+
+  /* ── Card Preview ── */
+  .stream-card .card-preview {
+    position: relative;
+    width: 100%;
+    max-height: 480px;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+    background: var(--white);
+    margin-bottom: 4px;
+  }
+  .stream-card .card-preview-fade {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    pointer-events: none;
+    z-index: 1;
+  }
+  .stream-card .card-preview iframe {
+    display: block;
+    border: none;
+    pointer-events: none;
+    transform-origin: top left;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .06em;
+    text-transform: uppercase; padding: 2px 8px 3px;
+    border-radius: 999px; border: 1px solid transparent;
+    font-weight: 500; white-space: nowrap;
+  }
+  .badge-report     { background:#E8F0FE; color:#1A56B0; border-color:#C3D5F5; }
+  .badge-slide      { background:#EDE9FE; color:#5B21B6; border-color:#D0C5F7; }
+  .badge-diagram    { background:#E8EDE0; color:#4A6030; border-color:#CFDAC0; }
+  .badge-flowchart  { background:#F5E6DE; color:var(--clay-d); border-color:#E8C9BA; }
+  .badge-exploration{ background:#F3E8FF; color:#6B21A8; border-color:#DDD0F7; }
+  .badge-review     { background:#FEE8E8; color:#991B1B; border-color:#FCCACA; }
+  .badge-explainer  { background:#E0F5F1; color:#0F6B60; border-color:#BADDD7; }
+  .badge-plan       { background:#FEF3C7; color:#92400E; border-color:#FCD888; }
+  .badge-tool       { background:var(--gray-50); color:var(--gray-800); border-color:var(--gray-200); }
+
+  /* ── Overlay ── */
+  #overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: none; flex-direction: column; background: var(--ivory);
+  }
+  .overlay-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 20px; height: 50px;
+    border-bottom: var(--border); background: var(--white); flex-shrink: 0;
+  }
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border: var(--border); border-radius: 6px;
+    background: none; cursor: pointer; font-family: var(--sans);
+    font-size: 12.5px; color: var(--gray-800);
+    transition: border-color .12s, background .12s; flex-shrink: 0;
+  }
+  .back-btn:hover { border-color: var(--clay); background: var(--gray-50); }
+  .overlay-title {
+    font-size: 14px; font-weight: 500; color: var(--slate);
+    flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .dl-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; color: var(--gray-800);
+    background: none; border: var(--border); border-radius: 6px;
+    padding: 5px 12px; cursor: pointer; text-decoration: none;
+    transition: border-color .12s, background .12s;
+  }
+  .dl-btn:hover { border-color: var(--gray-500); background: var(--gray-50); }
+  #ov-frame { flex: 1; border: none; display: block; background: var(--white); }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo">
+      <span class="live-dot" id="_dot"></span>
+      in-html
+    </div>
+    <div class="header-right">
+      <div class="status-indicator" id="_status" style="display:none">
+        <span class="status-dot" id="_status-dot"></span>
+        <span id="_status-text">idle</span>
+      </div>
+      <span class="artifact-count" id="_count" style="display:none"></span>
+      <button class="icon-btn" id="_export" style="display:none">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+          <path d="M2 8.5v1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-1M6 1v6.5M3.5 5 6 7.5 8.5 5"
+            stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export
+      </button>
+    </div>
+  </header>
+
+  <div class="stream" id="_stream">
+    <div class="empty" id="_empty">
+      <div class="empty-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="18" height="18" rx="3" stroke="var(--gray-500)" stroke-width="1.5"/>
+          <path d="M8 12h8M8 8h5M8 16h3" stroke="var(--gray-500)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="empty-title">No artifacts yet</div>
+      <div class="empty-sub">Run <code>/in-html</code> in the CLI,<br>then ask Claude to create something.</div>
+    </div>
+  </div>
+</div>
+
+<div id="overlay">
+  <div class="overlay-bar">
+    <button class="back-btn" onclick="closeOverlay()">
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+        <path d="M8 1L3 6l5 5" stroke="currentColor" stroke-width="1.5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back
+    </button>
+    <span class="overlay-title" id="ov-title"></span>
+    <span class="badge" id="ov-badge"></span>
+    <a class="dl-btn" id="ov-dl" download>
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+        <path d="M2 8.5v1a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5v-1M6 1v6.5M3.5 5 6 7.5 8.5 5"
+          stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Download
+    </a>
+  </div>
+  <iframe id="ov-frame" src=""></iframe>
+</div>
+
+<script>
+  window._loadSession = loadSession;
+  window._loadManifest = loadManifest;
+  let sessionEvents = [];
+  let manifest = [];
+  let firstLoad = true;
+  let renderPending = false;
+
+  async function loadSession() {
+    try {
+      const r = await fetch('/session.json?t=' + Date.now());
+      sessionEvents = await r.json();
+      scheduleRender();
+    } catch(e) {}
+  }
+
+  async function loadManifest() {
+    try {
+      const r = await fetch('/manifest.json?t=' + Date.now());
+      manifest = await r.json();
+      scheduleRender();
+    } catch(e) {}
+  }
+
+  function scheduleRender() {
+    if (renderPending) return;
+    renderPending = true;
+    setTimeout(() => {
+      renderPending = false;
+      renderStream();
+    }, 100);
+  }
+
+  function getManifestItem(id) {
+    return manifest.find(m => m.id === id);
+  }
+
+  function renderStream() {
+    const list = document.getElementById('_stream');
+    const empty = document.getElementById('_empty');
+    const count = document.getElementById('_count');
+    const nearBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 80;
+
+    if (!sessionEvents.length) {
+      empty.style.display = 'flex';
+      count.style.display = 'none';
+      list.querySelectorAll('.msg-user,.msg-ai,.stream-card').forEach(el => el.remove());
+      return;
+    }
+
+    empty.style.display = 'none';
+
+    const artCount = manifest.length;
+    if (artCount) {
+      count.style.display = '';
+      count.textContent = artCount + (artCount === 1 ? ' artifact' : ' artifacts');
+    } else {
+      count.style.display = 'none';
+    }
+
+    let html = '';
+    for (const ev of sessionEvents) {
+      const time = ev.timestamp ? new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+      if (ev.type === 'user_prompt') {
+        html += `<div class="msg-user">${esc(ev.text || '')}<div class="msg-time">${time}</div></div>`;
+      } else if (ev.type === 'ai_response') {
+        html += `<div class="msg-ai">${esc(ev.text || '')}<div class="msg-time">${time}</div></div>`;
+      } else if (ev.type === 'artifact') {
+        const item = getManifestItem(ev.artifactId);
+        if (item) {
+          const type = item.type || 'tool';
+          const title = esc(item.title || 'Untitled');
+          const prompt = esc(item.prompt || '');
+          html += `
+            <div class="stream-card" onclick="openArtifact('${esc(item.id)}','${esc(item.title||'')}','${esc(type)}')">
+              <div class="card-preview" data-src="/artifacts/${esc(item.id)}.html"></div>
+              ${prompt ? `<div class="card-prompt">${prompt}</div>` : ''}
+              <div class="card-row">
+                <span class="card-title">${title}</span>
+                <div class="card-meta">
+                  <span class="badge badge-${type}">${type}</span>
+                  <span class="card-time">${time}</span>
+                </div>
+              </div>
+            </div>`;
+        } else {
+          html += `<div class="stream-card"><div class="card-row"><span class="card-title">Artifact ${esc(ev.artifactId || '?')}</span><div class="card-meta"><span class="card-time">${time}</span></div></div></div>`;
+        }
+      }
+    }
+
+    const emptyEl = document.getElementById('_empty');
+    list.innerHTML = '';
+    list.appendChild(emptyEl);
+    list.insertAdjacentHTML('beforeend', html);
+
+    if (firstLoad || nearBottom) {
+      list.scrollTop = list.scrollHeight;
+      firstLoad = false;
+    }
+
+    initPreviews();
+  }
+
+  function initPreviews() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.card-preview[data-src]').forEach(box => {
+        if (box.querySelector('iframe')) return;
+        const src = box.dataset.src;
+        const containerW = box.offsetWidth;
+        if (containerW < 50) return;
+
+        const iframe = document.createElement('iframe');
+        iframe.sandbox = 'allow-same-origin allow-scripts';
+        iframe.src = src;
+        box.appendChild(iframe);
+
+        iframe.addEventListener('load', () => {
+          const maxH = parseInt(getComputedStyle(box).maxHeight) || 320;
+
+          requestAnimationFrame(() => {
+            let scale, offsetTop, offsetLeft, previewH;
+
+            try {
+              const doc = iframe.contentDocument;
+              // Expand body to full iframe width
+              doc.body.style.maxWidth = '1280px';
+              doc.body.style.width = '1280px';
+              doc.body.style.marginLeft = '0';
+              doc.body.style.marginRight = '0';
+              // Hide scrollbar in preview
+              const style = doc.createElement('style');
+              style.textContent = '::-webkit-scrollbar { display: none; } html, body { scrollbar-width: none; overflow: hidden; }';
+              doc.head.appendChild(style);
+
+              const el = doc.getElementById('preview');
+              if (el) {
+                const elW = el.offsetWidth;
+                const elH = el.offsetHeight;
+                const elLeft = el.offsetLeft;
+                scale = containerW / elW;
+                offsetTop = el.offsetTop * scale;
+                previewH = elH * scale;
+                // Center: shift iframe so #preview aligns with container center
+                offsetLeft = -elLeft * scale;
+              } else {
+                scale = containerW / 1280;
+                offsetTop = 0;
+                offsetLeft = 0;
+                previewH = 600 * scale;
+              }
+            } catch(e) {
+              scale = containerW / 1280;
+              offsetTop = 0;
+              previewH = 600 * scale;
+            }
+
+            const capped = previewH > maxH;
+
+            iframe.style.width = '1280px';
+            iframe.style.height = '900px';
+            iframe.style.transform = 'scale(' + scale + ')';
+            iframe.style.marginTop = (-offsetTop) + 'px';
+            iframe.style.marginLeft = (offsetLeft || 0) + 'px';
+            box.style.height = Math.min(previewH, maxH) + 'px';
+
+            if (capped && !box.querySelector('.card-preview-fade')) {
+              const fade = document.createElement('div');
+              fade.className = 'card-preview-fade';
+              box.appendChild(fade);
+            }
+          });
+        });
+      });
+    });
+  }
+
+  function openArtifact(id, title, type) {
+    document.getElementById('ov-title').textContent = title;
+    const b = document.getElementById('ov-badge');
+    b.textContent = type; b.className = 'badge badge-' + type;
+    document.getElementById('ov-frame').src = '/artifacts/' + id + '.html';
+    const dl = document.getElementById('ov-dl');
+    dl.href = '/artifacts/' + id + '.html';
+    dl.download = id + '-' + title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.html';
+    document.getElementById('overlay').style.display = 'flex';
+  }
+
+  function closeOverlay() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('ov-frame').src = '';
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+  // SSE — injected by server at runtime
+  loadSession();
+  loadManifest();
+
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.card-preview iframe').forEach(iframe => {
+      const box = iframe.parentElement;
+      const containerW = box.offsetWidth;
+      const maxH = 320;
+      let scale, offsetTop, offsetLeft, previewH;
+      try {
+        const doc = iframe.contentDocument;
+        doc.body.style.maxWidth = '1280px';
+        doc.body.style.width = '1280px';
+        doc.body.style.marginLeft = '0';
+        doc.body.style.marginRight = '0';
+        const el = doc.getElementById('preview');
+        if (el) {
+          scale = containerW / el.offsetWidth;
+          offsetTop = el.offsetTop * scale;
+          offsetLeft = -el.offsetLeft * scale;
+          previewH = el.offsetHeight * scale;
+        } else {
+          scale = containerW / 1280;
+          offsetTop = 0;
+          offsetLeft = 0;
+          previewH = 600 * scale;
+        }
+      } catch(e) {
+        scale = containerW / 1280;
+        offsetTop = 0;
+        offsetLeft = 0;
+        previewH = 600 * scale;
+      }
+      iframe.style.transform = 'scale(' + scale + ')';
+      iframe.style.marginTop = (-offsetTop) + 'px';
+      iframe.style.marginLeft = (offsetLeft || 0) + 'px';
+      box.style.height = Math.min(previewH, maxH) + 'px';
+    });
+  });
+</script>
+</body>
+</html>

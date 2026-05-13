@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.in-html/
+.inhtml/
+.vscode/
+.claude/
+.opencode/
+*.tgz
+.DS_Store
