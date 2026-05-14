@@ -1,11 +1,19 @@
 # inhtml
 
+[中文版](README.zh-CN.md)
+
 Give AI a screen. Rich HTML output from CLI conversations.
 
 ## Installation
 
 ```bash
-npm install -g inhtml
+npm install -g @ovotop/inhtml
+```
+
+Or run directly with npx (no installation needed):
+
+```bash
+npx @ovotop/inhtml init
 ```
 
 ## Usage
@@ -14,7 +22,8 @@ npm install -g inhtml
 
 ```bash
 cd your-project
-npx @ovotop/inhtml init
+inhtml init              # If installed globally
+npx @ovotop/inhtml init  # If using npx
 ```
 
 This automatically:

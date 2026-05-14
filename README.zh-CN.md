@@ -1,11 +1,19 @@
 # inhtml
 
+[English](README.md)
+
 给 AI 一块屏幕。CLI 对话中的富 HTML 输出。
 
 ## 安装
 
 ```bash
-npm install -g inhtml
+npm install -g @ovotop/inhtml
+```
+
+或直接使用 npx（无需安装）：
+
+```bash
+npx @ovotop/inhtml init
 ```
 
 ## 使用
@@ -14,7 +22,8 @@ npm install -g inhtml
 
 ```bash
 cd your-project
-npx @ovotop/inhtml init
+inhtml init              # 全局安装后
+npx @ovotop/inhtml init  # 使用 npx
 ```
 
 这会自动完成：
