@@ -7,7 +7,7 @@ Defines how the browser and CLI communicate. Browser displays conversation event
 ## Requirements
 
 ### Requirement: Browser messages reach AI agent
-When a user sends a message from the browser input box, the server SHALL append a `user_prompt` event to `.in-html/session.json` AND write to `.in-html/pending.txt` for backward compatibility. The AI skill SHALL instruct the agent to check `pending.txt` before responding to user prompts.
+When a user sends a message from the browser input box, the server SHALL append a `user_prompt` event to `.inhtml/session.json` AND write to `.inhtml/pending.txt` for backward compatibility. The AI skill SHALL instruct the agent to check `pending.txt` before responding to user prompts.
 
 #### Scenario: User sends message from browser
 - **WHEN** user types a message in the browser input and presses Enter

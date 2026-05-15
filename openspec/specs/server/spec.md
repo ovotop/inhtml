@@ -14,18 +14,18 @@ GET `/` SHALL respond with the `index.html` bundled inside the npm package, with
 - **THEN** server responds with the package's `assets/index.html`, `Content-Type: text/html`, `Cache-Control: no-cache`, and the SSE reload script injected
 
 ### Requirement: Serve manifest with no-cache
-GET `/manifest.json` SHALL return `.in-html/manifest.json` with `Cache-Control: no-cache` so the browser always fetches fresh data.
+GET `/manifest.json` SHALL return `.inhtml/manifest.json` with `Cache-Control: no-cache` so the browser always fetches fresh data.
 
 #### Scenario: Manifest requested
 - **WHEN** browser sends GET `/manifest.json`
 - **THEN** server responds with current file contents and `Cache-Control: no-cache`
 
 #### Scenario: Manifest does not exist yet
-- **WHEN** `.in-html/manifest.json` is absent
+- **WHEN** `.inhtml/manifest.json` is absent
 - **THEN** server responds with `[]`
 
 ### Requirement: Serve artifacts as static files
-GET `/artifacts/<id>.html` SHALL serve the corresponding file from `.in-html/artifacts/` without modification (no script injection).
+GET `/artifacts/<id>.html` SHALL serve the corresponding file from `.inhtml/artifacts/` without modification (no script injection).
 
 #### Scenario: Artifact requested
 - **WHEN** browser sends GET `/artifacts/0001.html`
@@ -35,7 +35,7 @@ GET `/artifacts/<id>.html` SHALL serve the corresponding file from `.in-html/art
 GET `/~events` SHALL hold an open SSE connection and send `data: r\n\n` whenever `manifest.json` or `session.json` changes.
 
 #### Scenario: Manifest updated by Claude
-- **WHEN** `.in-html/manifest.json` is written (mtime changes)
+- **WHEN** `.inhtml/manifest.json` is written (mtime changes)
 - **THEN** all connected `/~events` clients receive `data: r\n\n` within 400ms
 
 #### Scenario: Session event received
@@ -47,7 +47,7 @@ GET `/~events` SHALL hold an open SSE connection and send `data: r\n\n` whenever
 - **THEN** server sends `: ping\n\n` to all connected clients
 
 ### Requirement: POST /~hook accepts conversation events
-POST `/~hook` with a JSON body SHALL append the event to `.in-html/session.json` and broadcast an SSE reload event. Accepted event types: `user_prompt` (with `text` field), `ai_response` (with `text` field), `artifact_created` (with `artifactId` field).
+POST `/~hook` with a JSON body SHALL append the event to `.inhtml/session.json` and broadcast an SSE reload event. Accepted event types: `user_prompt` (with `text` field), `ai_response` (with `text` field), `artifact_created` (with `artifactId` field).
 
 #### Scenario: User prompt event
 - **WHEN** server receives POST `/~hook` with `{ "event": "user_prompt", "text": "make a report" }`
@@ -63,25 +63,25 @@ POST `/~hook` with a JSON body SHALL append the event to `.in-html/session.json`
 - **THEN** event is appended as `{ "type": "artifact", "artifactId": "0005", "timestamp": "..." }`
 
 ### Requirement: Serve session data
-GET `/session.json` SHALL return `.in-html/session.json` with `Cache-Control: no-cache`. If the file doesn't exist, return `[]`.
+GET `/session.json` SHALL return `.inhtml/session.json` with `Cache-Control: no-cache`. If the file doesn't exist, return `[]`.
 
 #### Scenario: Session requested
 - **WHEN** browser sends GET `/session.json`
 - **THEN** server responds with current session events and `Cache-Control: no-cache`
 
 ### Requirement: POST /~submit accepts browser input
-POST `/~submit` with a plain-text body SHALL write the text to `.in-html/pending.txt`, append a `user_prompt` event to session.json, print to terminal, and broadcast SSE. This maintains backward compatibility while integrating with the new session flow.
+POST `/~submit` with a plain-text body SHALL write the text to `.inhtml/pending.txt`, append a `user_prompt` event to session.json, print to terminal, and broadcast SSE. This maintains backward compatibility while integrating with the new session flow.
 
 #### Scenario: User submits from browser
 - **WHEN** browser POSTs text to `/~submit`
-- **THEN** `.in-html/pending.txt` is written with the submitted text, terminal prints `[html →] <text>`, and server responds `{"ok":true}`
+- **THEN** `.inhtml/pending.txt` is written with the submitted text, terminal prints `[html →] <text>`, and server responds `{"ok":true}`
 
 #### Scenario: Browser submits via old endpoint
 - **WHEN** browser POSTs text to `/~submit`
 - **THEN** pending.txt is written AND session.json gets a user_prompt event AND SSE fires
 
 ### Requirement: chokidar watches manifest.json and session.json
-The server SHALL use chokidar (not `fs.watch`) to watch `.in-html/manifest.json` and `.in-html/session.json`, with a 50ms debounce before broadcasting SSE events.
+The server SHALL use chokidar (not `fs.watch`) to watch `.inhtml/manifest.json` and `.inhtml/session.json`, with a 50ms debounce before broadcasting SSE events.
 
 #### Scenario: Rapid successive writes
 - **WHEN** manifest or session is written twice within 50ms

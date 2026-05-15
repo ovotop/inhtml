@@ -2,15 +2,15 @@
 
 ## Purpose
 
-Defines the manifest file format that tracks all AI-produced artifacts in the `.in-html/` directory.
+Defines the manifest file format that tracks all AI-produced artifacts in the `.inhtml/` directory.
 
 ## Requirements
 
-### Requirement: Manifest is a JSON array stored at .in-html/manifest.json
-The manifest SHALL be a valid JSON array at `.in-html/manifest.json`, append-only, where each element represents one AI-produced artifact.
+### Requirement: Manifest is a JSON array stored at .inhtml/manifest.json
+The manifest SHALL be a valid JSON array at `.inhtml/manifest.json`, append-only, where each element represents one AI-produced artifact.
 
 #### Scenario: Manifest initialized
-- **WHEN** `.in-html/` is created for the first time
+- **WHEN** `.inhtml/` is created for the first time
 - **THEN** `manifest.json` is written as `[]`
 
 ### Requirement: Each manifest entry has the required fields

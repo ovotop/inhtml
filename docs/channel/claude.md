@@ -7,7 +7,7 @@ Claude Code 的 **Channels** 机制允许外部系统推送消息到 CLI session
 ## 工作原理
 
 ```
-浏览器                    in-html server           Channel MCP Server
+浏览器                    inhtml server           Channel MCP Server
 ──────                    ──────────────           ──────────────────
 用户输入 ──POST /~hook──▶ 写 session.json
                           写 pending.txt
@@ -19,7 +19,7 @@ Claude Code 的 **Channels** 机制允许外部系统推送消息到 CLI session
                                                     ↓
                                               reply tool 被调用
                                                     ↓
-                                              POST back to in-html
+                                              POST back to inhtml
                                                     ↓
                           session.json 更新 ◀───────┘
                           SSE → 浏览器更新
@@ -44,18 +44,18 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 
 const mcp = new Server(
-  { name: 'in-html-channel', version: '0.0.1' },
+  { name: 'inhtml-channel', version: '0.0.1' },
   {
     capabilities: {
       experimental: { 'claude/channel': {} },  // 必须
       tools: {},  // 可选，用于 reply tool
     },
-    instructions: 'Messages arrive from in-html browser...',
+    instructions: 'Messages arrive from inhtml browser...',
   }
 )
 
 // 注册 reply tool（双向通信）
-// 注册 HTTP listener（接收 in-html server 转发的消息）
+// 注册 HTTP listener（接收 inhtml server 转发的消息）
 // 调用 mcp.notification() 推送消息到 Claude Code
 ```
 
@@ -66,7 +66,7 @@ const mcp = new Server(
 ```json
 {
   "mcpServers": {
-    "in-html-channel": {
+    "inhtml-channel": {
       "command": "bun",
       "args": ["./assets/channel.ts"]
     }
@@ -77,7 +77,7 @@ const mcp = new Server(
 启动 Claude Code 时加 flag（research preview 阶段）：
 
 ```bash
-claude --dangerously-load-development-channels server:in-html-channel
+claude --dangerously-load-development-channels server:inhtml-channel
 ```
 
 ## 限制

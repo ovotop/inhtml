@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines reusable UI component patterns for the in-html skill, ensuring consistent styling for cards, status indicators, labels, prompt boxes, grids, and tables across all generated artifacts.
+Defines reusable UI component patterns for the inhtml skill, ensuring consistent styling for cards, status indicators, labels, prompt boxes, grids, and tables across all generated artifacts.
 
 ## Requirements
 

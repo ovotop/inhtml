@@ -1,6 +1,6 @@
 ## Context
 
-The in-html browser UI has an input box for sending messages to the AI. The current flow: browser textarea → POST /~submit → write pending.txt → AI reads pending.txt. But the AI never reads pending.txt — the flow is broken.
+The inhtml browser UI has an input box for sending messages to the AI. The current flow: browser textarea → POST /~submit → write pending.txt → AI reads pending.txt. But the AI never reads pending.txt — the flow is broken.
 
 Fixing it properly requires per-tool integration:
 - Claude Code: Channel MCP server (~200 lines of MCP boilerplate)

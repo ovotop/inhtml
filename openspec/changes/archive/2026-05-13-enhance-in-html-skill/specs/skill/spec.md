@@ -5,11 +5,11 @@ The skill SHALL include a table mapping output types to formats so Claude does n
 
 #### Scenario: Simple question asked
 - **WHEN** user asks a yes/no question or requests a short answer
-- **THEN** Claude responds in plain text, does not write to `.in-html/artifacts/`
+- **THEN** Claude responds in plain text, does not write to `.inhtml/artifacts/`
 
 #### Scenario: Rich output requested
 - **WHEN** user asks for a report, diagram, slide deck, comparison, or plan
-- **THEN** Claude produces HTML and writes to `.in-html/artifacts/`
+- **THEN** Claude produces HTML and writes to `.inhtml/artifacts/`
 
 #### Scenario: Structured but unfamiliar output type
 - **WHEN** user asks for an output not explicitly listed in the decision table

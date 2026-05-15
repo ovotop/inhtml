@@ -1,8 +1,8 @@
 ## Context
 
-The in-html system has a Claude Code skill at `.claude/commands/in-html.md` that instructs Claude to produce HTML artifacts. The current skill file is minimal — it has a decision table, design tokens, a manifest protocol, and 8 example references. It produces structurally valid but visually flat output.
+The inhtml system has a Claude Code skill at `.claude/commands/inhtml.md` that instructs Claude to produce HTML artifacts. The current skill file is minimal — it has a decision table, design tokens, a manifest protocol, and 8 example references. It produces structurally valid but visually flat output.
 
-The archived `html-effectiveness` project at `/home/mi/Documents/ai/html-effectiveness/` contains 20 polished HTML examples with richer techniques: detailed typography, interactive editors with drag-and-drop, animation prototypes, collapsible sections, keyboard navigation, and copy-to-clipboard export. None of this knowledge is transferred to the in-html skill.
+The archived `html-effectiveness` project at `/home/mi/Documents/ai/html-effectiveness/` contains 20 polished HTML examples with richer techniques: detailed typography, interactive editors with drag-and-drop, animation prototypes, collapsible sections, keyboard navigation, and copy-to-clipboard export. None of this knowledge is transferred to the inhtml skill.
 
 The main specs (`openspec/specs/skill/spec.md`, `skill-design-system/spec.md`, `skill-component-patterns/spec.md`) already define requirements for typography, design tokens, and component patterns — but the actual skill file doesn't include all of them.
 
@@ -18,15 +18,15 @@ The main specs (`openspec/specs/skill/spec.md`, `skill-design-system/spec.md`, `
 - Not modifying the html-effectiveness example files
 - Not changing the server, CLI, or manifest format
 - Not adding a build step or external dependencies
-- Not creating a separate skill — everything stays in `in-html.md`
+- Not creating a separate skill — everything stays in `inhtml.md`
 
 ## Decisions
 
 ### Decision 1: Single skill file, not a separate interactive skill
 
-All interactive patterns go into the existing `in-html.md` skill file rather than creating a second skill. The skill grows but stays under 300 lines by referencing example files for structural patterns rather than embedding full code.
+All interactive patterns go into the existing `inhtml.md` skill file rather than creating a second skill. The skill grows but stays under 300 lines by referencing example files for structural patterns rather than embedding full code.
 
-**Alternative considered**: Separate `in-html-interactive.md` skill. Rejected — users shouldn't have to choose between two skills; the skill should handle the full spectrum from static reports to interactive tools.
+**Alternative considered**: Separate `inhtml-interactive.md` skill. Rejected — users shouldn't have to choose between two skills; the skill should handle the full spectrum from static reports to interactive tools.
 
 ### Decision 2: Interactive patterns as inline guidance, not separate spec
 

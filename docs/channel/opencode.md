@@ -7,7 +7,7 @@ OpenCode 有内置的 REST API server（默认端口 `4096`），支持通过 HT
 ## 工作原理
 
 ```
-浏览器                    in-html server           OpenCode API (:4096)
+浏览器                    inhtml server           OpenCode API (:4096)
 ──────                    ──────────────           ───────────────────
 用户输入 ──POST /~hook──▶ 写 session.json
                           POST :4096/tui/append-prompt
@@ -53,9 +53,9 @@ curl -X POST http://localhost:4096/session/{sessionID}/prompt_async \
   -d '{"parts": [{"type": "text", "text": "帮我做个状态报告"}]}'
 ```
 
-## in-html 集成
+## inhtml 集成
 
-在 in-html server 的 `POST /~hook` handler 中，当收到 `user_prompt` 事件时：
+在 inhtml server 的 `POST /~hook` handler 中，当收到 `user_prompt` 事件时：
 
 1. 调用 `POST :4096/tui/append-prompt` 填入文本
 2. 调用 `POST :4096/tui/submit-prompt` 提交

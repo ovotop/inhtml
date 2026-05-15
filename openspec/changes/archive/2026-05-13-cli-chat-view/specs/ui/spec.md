@@ -33,7 +33,7 @@ The textarea at the bottom SHALL POST its content to `/~hook` as `{ "event": "us
 - **THEN** text is POSTed to `/~hook`, a user bubble appears in the stream, and the textarea clears
 
 ### Requirement: Empty state shown when no session events exist
-When session.json is empty or absent, the UI SHALL show a centered empty state with the message "No conversation yet" and a hint to run `npx in-html init-hooks` to set up hook integration.
+When session.json is empty or absent, the UI SHALL show a centered empty state with the message "No conversation yet" and a hint to run `npx inhtml init-hooks` to set up hook integration.
 
 #### Scenario: Empty session
 - **WHEN** session.json is `[]` or absent

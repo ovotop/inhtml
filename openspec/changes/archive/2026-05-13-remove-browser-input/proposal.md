@@ -1,6 +1,6 @@
 ## Why
 
-The in-html browser UI has an input box that POSTs to `/~submit`, which writes to `pending.txt`. But the AI never reads `pending.txt` — the browser→CLI flow is broken by design. Fixing it properly requires Channel MCP servers (Claude Code), REST API integration (OpenCode), or WebSocket connections (Codex) — significant complexity for a feature that most users don't need (CLI is the primary input for all three tools).
+The inhtml browser UI has an input box that POSTs to `/~submit`, which writes to `pending.txt`. But the AI never reads `pending.txt` — the browser→CLI flow is broken by design. Fixing it properly requires Channel MCP servers (Claude Code), REST API integration (OpenCode), or WebSocket connections (Codex) — significant complexity for a feature that most users don't need (CLI is the primary input for all three tools).
 
 Removing the input box eliminates the broken flow, removes ~40% of the server code, and makes the architecture purely one-directional: CLI → hooks → server → SSE → browser.
 
@@ -39,6 +39,6 @@ Additionally, investigation reveals several pieces of dead code and a watcher bu
 - `src/manifest.ts` — deleted entirely
 - `src/watcher.ts` — monitors `session.json` instead of `manifest.json`
 - `src/cli.ts` — removes `status.json` creation
-- `.in-html/pending.txt` — no longer written
-- `.in-html/last-message.txt` — no longer written
-- `.in-html/status.json` — no longer created
+- `.inhtml/pending.txt` — no longer written
+- `.inhtml/last-message.txt` — no longer written
+- `.inhtml/status.json` — no longer created

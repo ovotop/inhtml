@@ -1,8 +1,8 @@
 ## 1. Server — New Endpoints & File Watch
 
-- [x] 1.1 Add `GET /~status` endpoint that reads `.in-html/status.json` and returns it as JSON (default: `{ "state": "idle" }`)
-- [x] 1.2 Update `handleSubmit` to also write timestamp to `.in-html/last-message.txt`
-- [x] 1.3 Ensure `ensureDirectories` creates `.in-html/status.json` with default idle state
+- [x] 1.1 Add `GET /~status` endpoint that reads `.inhtml/status.json` and returns it as JSON (default: `{ "state": "idle" }`)
+- [x] 1.2 Update `handleSubmit` to also write timestamp to `.inhtml/last-message.txt`
+- [x] 1.3 Ensure `ensureDirectories` creates `.inhtml/status.json` with default idle state
 
 ## 2. Browser — Status Display & Polling
 
@@ -19,8 +19,8 @@
 
 ## 4. Skill — Pending Message Check
 
-- [x] 4.1 Add instruction to SKILL.md: check `.in-html/pending.txt` before responding
-- [x] 4.2 Add instruction: write status to `.in-html/status.json` during artifact generation
+- [x] 4.1 Add instruction to SKILL.md: check `.inhtml/pending.txt` before responding
+- [x] 4.2 Add instruction: write status to `.inhtml/status.json` during artifact generation
 - [x] 4.3 Sync `assets/skill.md` with updated SKILL.md
 
 ## 5. Verify

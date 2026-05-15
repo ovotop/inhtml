@@ -1,10 +1,10 @@
 ## Context
 
-The in-html skill instructs AI to generate self-contained HTML artifacts. The current SKILL.md (127 lines) provides basic tokens and a template but lacks the design system depth needed for consistent, high-quality outputs. Meanwhile, 20+ example artifacts in `/home/mi/Documents/ai/html-effectiveness/` demonstrate rich patterns that the skill should encode.
+The inhtml skill instructs AI to generate self-contained HTML artifacts. The current SKILL.md (127 lines) provides basic tokens and a template but lacks the design system depth needed for consistent, high-quality outputs. Meanwhile, 20+ example artifacts in `/home/mi/Documents/ai/html-effectiveness/` demonstrate rich patterns that the skill should encode.
 
 The skill runs in two contexts:
-- **OpenCode** (`.opencode/skills/in-html/SKILL.md`) — primary, loaded via skill tool
-- **Claude Code** (`assets/skill.md`) — secondary, installed via `npx in-html init-skill`
+- **OpenCode** (`.opencode/skills/inhtml/SKILL.md`) — primary, loaded via skill tool
+- **Claude Code** (`assets/skill.md`) — secondary, installed via `npx inhtml init-skill`
 
 Both must stay in sync.
 

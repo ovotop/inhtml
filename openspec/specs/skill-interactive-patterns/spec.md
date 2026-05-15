@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines interactive UI patterns that the in-html skill SHALL use when producing editor, prototype, and other interactive artifacts.
+Defines interactive UI patterns that the inhtml skill SHALL use when producing editor, prototype, and other interactive artifacts.
 
 ## Requirements
 

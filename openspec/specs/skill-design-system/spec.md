@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the canonical design system for the in-html skill, including design tokens, typography, layout containers, color semantics, and responsive behavior to ensure visual consistency across all generated artifacts.
+Defines the canonical design system for the inhtml skill, including design tokens, typography, layout containers, color semantics, and responsive behavior to ensure visual consistency across all generated artifacts.
 
 ## Requirements
 

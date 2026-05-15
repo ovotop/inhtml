@@ -7,7 +7,7 @@ Codex 有 app-server 协议，支持通过 WebSocket 发送 `turn/start` 请求�
 ## 工作原理
 
 ```
-浏览器                    in-html server           Codex App-Server
+浏览器                    inhtml server           Codex App-Server
 ──────                    ──────────────           ────────────────
 用户输入 ──POST /~hook──▶ 写 session.json
                           WebSocket / HTTP ───────▶ turn/start
@@ -57,10 +57,10 @@ codex --remote ws://localhost:PORT
 | 复杂度 | 中等（需要 MCP server） | 较高（需要 WS 连接管理） |
 | 成熟度 | Research Preview | Experimental |
 
-## in-html 集成
+## inhtml 集成
 
 需要：
-1. in-html server 维护一个 WebSocket 连接到 Codex app-server
+1. inhtml server 维护一个 WebSocket 连接到 Codex app-server
 2. 收到浏览器消息时，通过 WS 发送 `turn/start`
 3. 通过 hooks 捕获回复事件
 

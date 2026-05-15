@@ -1,6 +1,6 @@
 ## Context
 
-The in-html system currently shows artifact cards in a flat list. Users interact via a textarea that POSTs to `/~submit`, which writes to `pending.txt`. The AI is supposed to read `pending.txt` but the skill has no instruction to do so — the flow is broken.
+The inhtml system currently shows artifact cards in a flat list. Users interact via a textarea that POSTs to `/~submit`, which writes to `pending.txt`. The AI is supposed to read `pending.txt` but the skill has no instruction to do so — the flow is broken.
 
 All three target CLI tools have hook systems with identical event names:
 - **Claude Code**: Hooks in `.claude/settings.json`, types: command, HTTP, prompt, agent
@@ -19,7 +19,7 @@ The key events for conversation capture are:
 - Single hook script works for all three CLI tools
 - Real-time updates via SSE
 - Browser input still works (now via hooks instead of `pending.txt`)
-- `in-html init-hooks` command to set up hook configs
+- `inhtml init-hooks` command to set up hook configs
 
 **Non-Goals:**
 - Not capturing full AI conversation text (only summaries and events)
@@ -31,7 +31,7 @@ The key events for conversation capture are:
 
 ### Decision 1: Session event log as single source of truth
 
-All conversation events go to `.in-html/session.json` — an append-only array of events. Each event has `{ type, role, text?, artifactId?, timestamp }`. The UI reads this file (via SSE-triggered refresh) instead of mixing manifest and pending.txt.
+All conversation events go to `.inhtml/session.json` — an append-only array of events. Each event has `{ type, role, text?, artifactId?, timestamp }`. The UI reads this file (via SSE-triggered refresh) instead of mixing manifest and pending.txt.
 
 **Alternative considered**: Extend manifest.json with message entries. Rejected — manifest is for artifacts, mixing in messages dilutes its purpose.
 

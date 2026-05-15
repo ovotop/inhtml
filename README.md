@@ -42,6 +42,20 @@ AI:  [Auto-starts inhtml server]
      [Browser opens, card appears]
 ```
 
+### What the Skill Does
+
+The `inhtml` skill (installed at `.claude/commands/inhtml.md`) instructs AI to:
+
+1. **Auto-start server** — Checks if `localhost:7654` is running, starts it if not
+2. **Generate HTML** — Creates self-contained HTML artifacts with inline CSS/JS
+3. **Register artifacts** — Updates `.inhtml/manifest.json` and `session.json`
+4. **Use design tokens** — Follows consistent styling (colors, typography, layout)
+
+The skill supports various content types:
+- Status reports, comparisons, flowcharts, diagrams
+- Slides, reviews, explainers, plans, kanban boards
+- Incident reports, comparison tables, dashboards
+
 ### CLI Options
 
 ```bash

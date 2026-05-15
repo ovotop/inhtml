@@ -10,8 +10,8 @@ The browser input box has been removed. The `/~submit` endpoint wrote to `pendin
 Use CLI input directly. Browser displays conversation events captured by hooks.
 
 ### Requirement: chokidar watches manifest.json
-The server SHALL use chokidar to watch `.in-html/session.json` (not `manifest.json`), with a 50ms debounce before broadcasting SSE events.
+The server SHALL use chokidar to watch `.inhtml/session.json` (not `manifest.json`), with a 50ms debounce before broadcasting SSE events.
 
 #### Scenario: Session updated by hook
-- **WHEN** `.in-html/session.json` is written
+- **WHEN** `.inhtml/session.json` is written
 - **THEN** all connected `/~events` clients receive `data: r\n\n` within 400ms

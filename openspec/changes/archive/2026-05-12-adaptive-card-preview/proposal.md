@@ -20,5 +20,5 @@ The current card preview uses a fixed 16:9 aspect ratio, which arbitrarily crops
 ## Impact
 
 - `assets/index.html` — Preview rendering logic (JS + CSS)
-- `.opencode/skills/in-html/SKILL.md` — Add `id="preview"` convention
+- `.opencode/skills/inhtml/SKILL.md` — Add `id="preview"` convention
 - `assets/skill.md` — Sync with SKILL.md

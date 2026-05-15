@@ -1,18 +1,18 @@
 ## ADDED Requirements
 
 ### Requirement: Skill file is bundled in the npm package
-The Claude Code skill SHALL be stored as `assets/skill.md` inside the package and placed in the user's project by `in-html init-skill`.
+The Claude Code skill SHALL be stored as `assets/skill.md` inside the package and placed in the user's project by `inhtml init-skill`.
 
 #### Scenario: Skill placed by init-skill
-- **WHEN** user runs `npx in-html init-skill`
-- **THEN** `assets/skill.md` is copied to `.claude/commands/in-html.md` in the project root
+- **WHEN** user runs `npx inhtml init-skill`
+- **THEN** `assets/skill.md` is copied to `.claude/commands/inhtml.md` in the project root
 
-### Requirement: Skill instructs Claude to write artifacts to .in-html/artifacts/
-When invoked as `/in-html`, the skill SHALL instruct Claude to write every rich HTML response as a complete self-contained file to `.in-html/artifacts/<id>.html` and update `.in-html/manifest.json`.
+### Requirement: Skill instructs Claude to write artifacts to .inhtml/artifacts/
+When invoked as `/inhtml`, the skill SHALL instruct Claude to write every rich HTML response as a complete self-contained file to `.inhtml/artifacts/<id>.html` and update `.inhtml/manifest.json`.
 
 #### Scenario: Claude produces HTML output
-- **WHEN** user invokes `/in-html` and asks for a status report
-- **THEN** Claude writes a complete HTML file to `.in-html/artifacts/<id>.html` and appends a new entry to `.in-html/manifest.json`
+- **WHEN** user invokes `/inhtml` and asks for a status report
+- **THEN** Claude writes a complete HTML file to `.inhtml/artifacts/<id>.html` and appends a new entry to `.inhtml/manifest.json`
 
 ### Requirement: Skill provides the manifest update protocol
 The skill SHALL specify exactly how to read the current manifest, compute the next ID, and append a new entry with fields: `id`, `title`, `type`, `prompt`, `timestamp`.
@@ -33,11 +33,11 @@ The skill SHALL include a table mapping output types to formats so Claude does n
 
 #### Scenario: Simple question asked
 - **WHEN** user asks a yes/no question or requests a short answer
-- **THEN** Claude responds in plain text, does not write to `.in-html/artifacts/`
+- **THEN** Claude responds in plain text, does not write to `.inhtml/artifacts/`
 
 #### Scenario: Rich output requested
 - **WHEN** user asks for a report, diagram, slide deck, comparison, or plan
-- **THEN** Claude produces HTML and writes to `.in-html/artifacts/`
+- **THEN** Claude produces HTML and writes to `.inhtml/artifacts/`
 
 ### Requirement: Skill references example library for structural patterns
 The skill SHALL list the example files in `/home/mi/Documents/ai/html-effectiveness/` by category so Claude can read them for layout patterns.

@@ -23,4 +23,4 @@ Additionally, when many cards accumulate, the card list compresses cards vertica
 - `src/server.ts` — New endpoints, pending.txt watch
 - `src/cli.ts` — File watch integration for pending.txt
 - `assets/index.html` — Card list scrolling fix, status polling
-- `.opencode/skills/in-html/SKILL.md` — Update skill to check pending.txt
+- `.opencode/skills/inhtml/SKILL.md` — Update skill to check pending.txt

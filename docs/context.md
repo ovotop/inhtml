@@ -1,15 +1,15 @@
-# in-html — 项目上下文
+# inhtml — 项目上下文
 
 ## 这是什么
 
-`in-html` 是一个 npm 包，给 AI 一块"屏幕"。用户在 CLI 里与 Claude 对话，Claude 把富文本输出写成自包含的 HTML 文件，浏览器窗口实时显示一个卡片列表，点击卡片全屏查看。
+`inhtml` 是一个 npm 包，给 AI 一块"屏幕"。用户在 CLI 里与 Claude 对话，Claude 把富文本输出写成自包含的 HTML 文件，浏览器窗口实时显示一个卡片列表，点击卡片全屏查看。
 
 ```
 CLI (左半屏)                    浏览器 (右半屏)
 ──────────────────              ──────────────────────────────
 用户输入 prompt                  卡片列表 (旧→新，从上到下)
 Claude 生成 HTML                 每张卡 = 用户 prompt + 产物标题
-写入 .in-html/artifacts/         点击 → 全屏 iframe + 下载按钮
+写入 .inhtml/artifacts/         点击 → 全屏 iframe + 下载按钮
 更新 manifest.json               manifest 变化 → SSE → 自动刷新
 ```
 
@@ -31,7 +31,7 @@ Claude 生成 HTML                 每张卡 = 用户 prompt + 产物标题
 
 ## npm 包名
 
-**`in-html`** — 已确认在 npm registry 可用
+**`inhtml`** — 已确认在 npm registry 可用
 
 ## 技术栈决策
 
@@ -49,7 +49,7 @@ Claude 生成 HTML                 每张卡 = 用户 prompt + 产物标题
 
 ```
 your-project/
-  .in-html/               ← 运行时数据（建议加入 .gitignore）
+  .inhtml/               ← 运行时数据（建议加入 .gitignore）
     manifest.json         ← 产物注册表 []
     artifacts/
       0001.html
@@ -57,10 +57,10 @@ your-project/
     pending.txt           ← 浏览器输入队列（可选）
   .claude/
     commands/
-      in-html.md          ← Claude Code 技能
+      inhtml.md          ← Claude Code 技能
   .opencode/
     skills/
-      in-html/
+      inhtml/
         SKILL.md          ← OpenCode 技能
 ```
 
@@ -85,11 +85,11 @@ type 的合法值：`report` | `slide` | `diagram` | `flowchart` | `exploration`
 ## CLI 接口
 
 ```bash
-npx in-html                    # 启动服务器 + 打开浏览器（默认端口 7654）
-npx in-html --port 8080        # 自定义端口
-npx in-html --no-open          # 不自动打开浏览器
-npx in-html init-skill         # 放置 .claude/commands/in-html.md
-npx in-html init-skill --force # 覆盖已有技能文件
+npx inhtml                    # 启动服务器 + 打开浏览器（默认端口 7654）
+npx inhtml --port 8080        # 自定义端口
+npx inhtml --no-open          # 不自动打开浏览器
+npx inhtml init-skill         # 放置 .claude/commands/inhtml.md
+npx inhtml init-skill --force # 覆盖已有技能文件
 ```
 
 ## 服务器端点
@@ -97,7 +97,7 @@ npx in-html init-skill --force # 覆盖已有技能文件
 | 端点 | 说明 |
 |------|------|
 | `GET /` | 提供 assets/index.html（注入 SSE 脚本） |
-| `GET /manifest.json` | 提供 .in-html/manifest.json，Cache-Control: no-cache |
+| `GET /manifest.json` | 提供 .inhtml/manifest.json，Cache-Control: no-cache |
 | `GET /artifacts/:id.html` | 静态提供产物文件，不注入脚本 |
 | `GET /~events` | SSE 流，manifest 变化时发送 `data: r` |
 | `POST /~submit` | 写入 pending.txt，打印到终端，支持纯文本和 JSON |
@@ -105,8 +105,8 @@ npx in-html init-skill --force # 覆盖已有技能文件
 ## 项目文件结构（已实现）
 
 ```
-in-html/
-  package.json              name: "in-html", bin: { "in-html": "./dist/cli.js" }
+inhtml/
+  package.json              name: "inhtml", bin: { "inhtml": "./dist/cli.js" }
   tsconfig.json
   tsup.config.ts
   src/
@@ -127,7 +127,7 @@ in-html/
 
 ### 启动服务器
 ```bash
-npx in-html
+npx inhtml
 # 或
 npm run build && npx .
 ```
@@ -135,19 +135,19 @@ npm run build && npx .
 ### 使用 Skill
 ```bash
 # 1. 初始化技能文件（已做）
-npx in-html init-skill
+npx inhtml init-skill
 
 # 2. 在 Claude Code 中
-/in-html 帮我创建一个状态报告
+/inhtml 帮我创建一个状态报告
 
 # 3. 在 OpenCode 中
-/in-html 帮我创建一个状态报告
+/inhtml 帮我创建一个状态报告
 ```
 
 ### 测试
 ```bash
 # 启动服务器
-npx in-html --no-open
+npx inhtml --no-open
 
 # 测试提交
 curl -X POST http://localhost:7654/~submit -H "Content-Type: text/plain" -d "test message"
@@ -171,11 +171,11 @@ UI 原型已完成：`assets/index.html`（功能完整，带动态 manifest 加
 
 | 变更 | 状态 | 说明 |
 |------|------|------|
-| `html-effectiveness` | 已废弃 | Python 原型阶段，被 in-html 取代 |
-| `in-html` | ✅ 全部 46 任务完成 | 开发完成，待发布 |
+| `html-effectiveness` | 已废弃 | Python 原型阶段，被 inhtml 取代 |
+| `inhtml` | ✅ 全部 46 任务完成 | 开发完成，待发布 |
 
 ## 下一步
 
-1. 测试：`npx in-html` 在项目目录启动
-2. 测试：`/in-html` 在 OpenCode/Claude Code 中使用
+1. 测试：`npx inhtml` 在项目目录启动
+2. 测试：`/inhtml` 在 OpenCode/Claude Code 中使用
 3. 发布：`npm publish`（需要先 npm login）

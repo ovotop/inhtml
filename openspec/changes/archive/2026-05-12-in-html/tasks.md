@@ -1,10 +1,10 @@
 ## 1. Project scaffold
 
 - [x] 1.1 Delete `server.py`, `start.sh`, and `www/` from the repo
-- [x] 1.2 Create `package.json` with name `in-html`, bin `{ "in-html": "./dist/cli.js" }`, and deps: `chokidar`, `open`; devDeps: `typescript`, `tsup`, `@types/node`
+- [x] 1.2 Create `package.json` with name `inhtml`, bin `{ "inhtml": "./dist/cli.js" }`, and deps: `chokidar`, `open`; devDeps: `typescript`, `tsup`, `@types/node`
 - [x] 1.3 Create `tsconfig.json` targeting Node 18, `moduleResolution: bundler`, `outDir: dist`
 - [x] 1.4 Create `src/` and `assets/` directories
-- [x] 1.5 Add `.gitignore` entries: `dist/`, `node_modules/`, `.in-html/`
+- [x] 1.5 Add `.gitignore` entries: `dist/`, `node_modules/`, `.inhtml/`
 - [x] 1.6 Run `npm install` to generate `package-lock.json`
 
 ## 2. Manifest schema
@@ -21,15 +21,15 @@
 
 - [x] 4.1 Create `src/server.ts` — `ThreadingHTTPServer` equivalent using Node `http.createServer`
 - [x] 4.2 Implement GET `/` → serve `assets/index.html` with SSE script injected before `</body>`, `Cache-Control: no-cache`
-- [x] 4.3 Implement GET `/manifest.json` → serve `.in-html/manifest.json` with `Cache-Control: no-cache`, fallback to `[]`
-- [x] 4.4 Implement GET `/artifacts/:id.html` → serve `.in-html/artifacts/:id.html` as static
+- [x] 4.3 Implement GET `/manifest.json` → serve `.inhtml/manifest.json` with `Cache-Control: no-cache`, fallback to `[]`
+- [x] 4.4 Implement GET `/artifacts/:id.html` → serve `.inhtml/artifacts/:id.html` as static
 - [x] 4.5 Implement GET `/~events` → SSE endpoint; hold connection, send `data: r\n\n` on broadcast, `: ping\n\n` every 20s
-- [x] 4.6 Implement POST `/~submit` → write `.in-html/pending.txt`, print `[html →] <text>` to stdout, respond `{"ok":true}`
+- [x] 4.6 Implement POST `/~submit` → write `.inhtml/pending.txt`, print `[html →] <text>` to stdout, respond `{"ok":true}`
 - [x] 4.7 Export `createServer(root: string, port: number): http.Server`
 
 ## 5. File watcher
 
-- [x] 5.1 Create `src/watcher.ts` — watch `.in-html/manifest.json` with chokidar, 50ms debounce
+- [x] 5.1 Create `src/watcher.ts` — watch `.inhtml/manifest.json` with chokidar, 50ms debounce
 - [x] 5.2 On change, call a provided `broadcast()` callback
 - [x] 5.3 Export `startWatcher(root: string, broadcast: () => void): FSWatcher`
 
@@ -44,14 +44,14 @@
 
 ## 7. Skill asset
 
-- [x] 7.1 Create `assets/skill.md` — the Claude Code skill for `/in-html`
+- [x] 7.1 Create `assets/skill.md` — the Claude Code skill for `/inhtml`
 - [x] 7.2 Skill content: decision table (HTML vs plain text), design token palette, manifest update protocol (read → compute next id → write artifact → append manifest entry), type taxonomy, example library references
 
 ## 8. CLI entry point
 
 - [x] 8.1 Create `src/cli.ts` — parse argv: default = start, `init-skill` subcommand, `--port`, `--no-open`, `--force`
-- [x] 8.2 Default command: call `findProjectRoot()`, ensure `.in-html/` + `artifacts/` exist, initialize manifest if absent, start server + watcher, call `open(url)` unless `--no-open`, print URL
-- [x] 8.3 `init-skill` command: copy `assets/skill.md` to `<root>/.claude/commands/in-html.md`, create parent dirs, respect `--force`
+- [x] 8.2 Default command: call `findProjectRoot()`, ensure `.inhtml/` + `artifacts/` exist, initialize manifest if absent, start server + watcher, call `open(url)` unless `--no-open`, print URL
+- [x] 8.3 `init-skill` command: copy `assets/skill.md` to `<root>/.claude/commands/inhtml.md`, create parent dirs, respect `--force`
 - [x] 8.4 Add shebang `#!/usr/bin/env node` to compiled output via tsup banner option
 
 ## 9. Build
@@ -62,17 +62,17 @@
 
 ## 10. Validation
 
-- [x] 10.1 Run `npx .` in a temp directory — verify `.in-html/` created, server starts, browser opens
+- [x] 10.1 Run `npx .` in a temp directory — verify `.inhtml/` created, server starts, browser opens
 - [x] 10.2 Manually write a test entry to `manifest.json` — verify browser card list updates without page reload
 - [x] 10.3 Click a card — verify overlay opens with iframe
 - [x] 10.4 Click Download — verify file downloads with slugified name
 - [x] 10.5 Submit from browser input — verify `pending.txt` written and terminal prints `[html →]`
-- [x] 10.6 Run `npx . init-skill` — verify `.claude/commands/in-html.md` created
-- [x] 10.7 Invoke `/in-html` in Claude Code, ask for a status report — verify artifact written to `.in-html/artifacts/` and card appears in browser
+- [x] 10.6 Run `npx . init-skill` — verify `.claude/commands/inhtml.md` created
+- [x] 10.7 Invoke `/inhtml` in Claude Code, ask for a status report — verify artifact written to `.inhtml/artifacts/` and card appears in browser
 
 ## 11. Publish
 
 - [x] 11.1 Add `README.md` with install, usage, and workflow sections
 - [x] 11.2 Set `package.json` `files` field to include `dist/` and `assets/`
 - [x] 11.3 `npm publish --dry-run` and verify package contents
-- [x] 11.4 `npm publish` to publish `in-html@0.1.0`
+- [x] 11.4 `npm publish` to publish `inhtml@0.1.0`

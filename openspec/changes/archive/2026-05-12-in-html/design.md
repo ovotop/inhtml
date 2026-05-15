@@ -7,7 +7,7 @@ The UI design is complete — built and validated as `www/output.html` using the
 ## Goals / Non-Goals
 
 **Goals:**
-- Zero-config: `npx in-html` in any directory just works
+- Zero-config: `npx inhtml` in any directory just works
 - TypeScript source compiled to a single distributable with `tsup`
 - UI served from the package itself (not copied to user's project)
 - Stable `manifest.json` schema locked at v0.1
@@ -25,15 +25,15 @@ The UI design is complete — built and validated as `www/output.html` using the
 
 ### Decision 1: TypeScript + tsup → single `dist/cli.js`
 
-`tsup` bundles everything (server, watcher, UI HTML string, skill markdown) into one file. This means `npx in-html` downloads and runs in seconds with no secondary installs.
+`tsup` bundles everything (server, watcher, UI HTML string, skill markdown) into one file. This means `npx inhtml` downloads and runs in seconds with no secondary installs.
 
 **Alternative**: esbuild directly. Rejected — tsup is a thin, well-maintained wrapper with better defaults for CLI tools.
 
 ### Decision 2: UI served from package, not copied to user project
 
-`assets/index.html` is read at runtime from the package directory (`__dirname`). The user's `.in-html/` contains only data (manifest, artifacts, pending.txt). Updating the package updates the UI automatically.
+`assets/index.html` is read at runtime from the package directory (`__dirname`). The user's `.inhtml/` contains only data (manifest, artifacts, pending.txt). Updating the package updates the UI automatically.
 
-**Alternative**: Copy `index.html` to `.in-html/` on init. Rejected — stale UI copies, harder upgrades.
+**Alternative**: Copy `index.html` to `.inhtml/` on init. Rejected — stale UI copies, harder upgrades.
 
 ### Decision 3: chokidar for file watching
 
@@ -41,11 +41,11 @@ The UI design is complete — built and validated as `www/output.html` using the
 
 **Dependency footprint**: chokidar + its deps add ~300KB to the install. Acceptable for a dev tool.
 
-### Decision 4: `.in-html/` at project root, found by walking up
+### Decision 4: `.inhtml/` at project root, found by walking up
 
 On startup, walk up from `cwd` looking for `package.json` or `.git`. Use that directory as the project root. Fall back to `cwd` if neither found. This mirrors how git and npm resolve the project root.
 
-**Alternative**: Always use `cwd`. Rejected — running from a subdirectory (e.g., `src/`) would scatter `.in-html/` inside source trees.
+**Alternative**: Always use `cwd`. Rejected — running from a subdirectory (e.g., `src/`) would scatter `.inhtml/` inside source trees.
 
 ### Decision 5: Manifest is an append-only JSON array
 
@@ -69,7 +69,7 @@ ID is zero-padded 4-digit sequential (`String(items.length + 1).padStart(4, '0')
 
 The `open` package handles cross-platform browser launching (respects `$BROWSER`, falls back to system default). Replaces the `google-chrome --window-position` approach from the prototype — too brittle across platforms.
 
-### Decision 7: POST /~submit writes to `.in-html/pending.txt` + prints to terminal
+### Decision 7: POST /~submit writes to `.inhtml/pending.txt` + prints to terminal
 
 When the user submits from the browser, the server writes the text to `pending.txt` and prints it clearly to the terminal (`[html →] <text>`). The terminal user (or a Claude hook) can read and act on it. No attempt to inject into Claude's stdin — out of scope for v0.1.
 

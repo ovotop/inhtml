@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Hook-based integration that captures conversation events from CLI tools (Claude Code, OpenCode, Codex) and forwards them to the in-html server for display in the browser chat view.
+Hook-based integration that captures conversation events from CLI tools (Claude Code, OpenCode, Codex) and forwards them to the inhtml server for display in the browser chat view.
 
 ## Requirements
 
@@ -18,33 +18,33 @@ The system SHALL provide a shell script (`assets/hook.sh`) that reads JSON from 
 - **THEN** the hook script POSTs `{ "event": "ai_response", "text": "<summary>" }` to `/~hook`
 
 #### Scenario: AI creates an artifact file
-- **WHEN** the `PostToolUse` hook fires for a Write tool call targeting `.in-html/artifacts/`
+- **WHEN** the `PostToolUse` hook fires for a Write tool call targeting `.inhtml/artifacts/`
 - **THEN** the hook script POSTs `{ "event": "artifact_created", "artifactId": "<id>" }` to `/~hook`
 
 ### Requirement: Claude Code hook configuration
 The system SHALL generate a `.claude/settings.json` hooks block (or merge into existing) that registers the hook script for `UserPromptSubmit`, `Stop`, and `PostToolUse` events.
 
 #### Scenario: User runs init-hooks for Claude Code
-- **WHEN** user runs `npx in-html init-hooks --tool claude`
+- **WHEN** user runs `npx inhtml init-hooks --tool claude`
 - **THEN** `.claude/settings.json` is created/updated with hooks calling `assets/hook.sh` for the three events
 
 ### Requirement: OpenCode plugin hook configuration
 The system SHALL provide an OpenCode plugin that registers `chat.message`, `event`, and `tool.execute.after` hooks calling the hook script.
 
 #### Scenario: User runs init-hooks for OpenCode
-- **WHEN** user runs `npx in-html init-hooks --tool opencode`
+- **WHEN** user runs `npx inhtml init-hooks --tool opencode`
 - **THEN** the OpenCode plugin configuration is created/updated with hooks for the three events
 
 ### Requirement: Codex hook configuration
 The system SHALL generate `~/.codex/config.toml` hook entries (or merge into existing) that register the hook script for `UserPromptSubmit`, `Stop`, and `PostToolUse` events.
 
 #### Scenario: User runs init-hooks for Codex
-- **WHEN** user runs `npx in-html init-hooks --tool codex`
+- **WHEN** user runs `npx inhtml init-hooks --tool codex`
 - **THEN** `~/.codex/config.toml` is created/updated with `[[hooks]]` entries calling the hook script
 
 ### Requirement: init-hooks CLI command
-The CLI SHALL provide an `in-html init-hooks` command with `--tool` flag accepting `claude`, `opencode`, `codex`, or `all`. It copies the hook script to the project and configures the specified tool(s).
+The CLI SHALL provide an `inhtml init-hooks` command with `--tool` flag accepting `claude`, `opencode`, `codex`, or `all`. It copies the hook script to the project and configures the specified tool(s).
 
 #### Scenario: Init hooks for all tools
-- **WHEN** user runs `npx in-html init-hooks --tool all`
-- **THEN** the hook script is placed at `.in-html/hooks/hook.sh` and all three tool configs are created/updated
+- **WHEN** user runs `npx inhtml init-hooks --tool all`
+- **THEN** the hook script is placed at `.inhtml/hooks/hook.sh` and all three tool configs are created/updated

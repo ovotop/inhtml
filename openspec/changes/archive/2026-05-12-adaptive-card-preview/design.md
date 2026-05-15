@@ -1,6 +1,6 @@
 ## Context
 
-The in-html host UI (`assets/index.html`) renders a card list of artifacts. Each card currently has a 16:9 preview container with a scaled-down iframe. The iframe uses `transform: scale()` with `transform-origin: top left` to shrink the full page into the preview area. Problem: the 16:9 ratio arbitrarily crops content, and important information is often not at the top.
+The inhtml host UI (`assets/index.html`) renders a card list of artifacts. Each card currently has a 16:9 preview container with a scaled-down iframe. The iframe uses `transform: scale()` with `transform-origin: top left` to shrink the full page into the preview area. Problem: the 16:9 ratio arbitrarily crops content, and important information is often not at the top.
 
 Current flow:
 ```

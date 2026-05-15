@@ -1,6 +1,6 @@
 {
   "name": "@ovotop/inhtml",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Give AI a screen — rich HTML output from CLI conversations",
   "main": "./dist/cli.js",
   "bin": {

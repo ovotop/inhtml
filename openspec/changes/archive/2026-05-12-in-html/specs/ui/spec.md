@@ -66,7 +66,7 @@ A small dot in the header SHALL be olive-green (animated) when the SSE connectio
 - **THEN** dot turns gray
 
 ### Requirement: Empty state shown when no artifacts exist
-When the manifest is empty, the UI SHALL show a centered empty state with the message "No artifacts yet" and a hint to run `/in-html` in the CLI.
+When the manifest is empty, the UI SHALL show a centered empty state with the message "No artifacts yet" and a hint to run `/inhtml` in the CLI.
 
 #### Scenario: Empty manifest
 - **WHEN** manifest.json is `[]`

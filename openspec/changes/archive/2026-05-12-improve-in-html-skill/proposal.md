@@ -1,6 +1,6 @@
 ## Why
 
-The in-html SKILL.md is the primary instruction set that guides AI to produce high-quality HTML artifacts. Current issues reduce output quality and consistency:
+The inhtml SKILL.md is the primary instruction set that guides AI to produce high-quality HTML artifacts. Current issues reduce output quality and consistency:
 
 1. **Design tokens mismatch** — SKILL.md uses `--gray-50/200/500/800` but most example artifacts use `--gray-150/300/500/700`. No canonical guidance on which to use.
 2. **Missing design primitives** — No `--clay-d`, `--rust`, `--radius-panel`, `--radius-row`, `--border` tokens that examples rely on.
@@ -32,5 +32,5 @@ The in-html SKILL.md is the primary instruction set that guides AI to produce hi
 ## Impact
 
 - `assets/skill.md` — The Claude Code version of the skill (should stay in sync with SKILL.md)
-- `.opencode/skills/in-html/SKILL.md` — Primary file being rewritten
+- `.opencode/skills/inhtml/SKILL.md` — Primary file being rewritten
 - Future artifact quality — More consistent, better-styled HTML outputs

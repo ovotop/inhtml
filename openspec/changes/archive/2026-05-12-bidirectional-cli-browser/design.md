@@ -1,10 +1,10 @@
 ## Context
 
-The in-html system has a one-way communication gap:
+The inhtml system has a one-way communication gap:
 - **CLI → Browser**: Works via SSE (watcher detects manifest change → broadcast → browser refreshes)
 - **Browser → CLI**: Broken — `POST /~submit` writes to `pending.txt` and `console.log`, but the AI agent (running in a separate process, e.g., OpenCode) has no notification mechanism
 
-The CLI process (`npx in-html`) and the AI agent are separate processes. They share the filesystem (`.in-html/` directory) but have no direct IPC.
+The CLI process (`npx inhtml`) and the AI agent are separate processes. They share the filesystem (`.inhtml/` directory) but have no direct IPC.
 
 ## Goals / Non-Goals
 
@@ -27,8 +27,8 @@ The CLI process (`npx in-html`) and the AI agent are separate processes. They sh
 
 **Mechanism:**
 - Server writes to `pending.txt` on `POST /~submit` (already done)
-- Server also writes a timestamp to `.in-html/last-message.txt` for quick polling
-- AI skill instructs: "Before responding, check `.in-html/pending.txt` for new browser messages"
+- Server also writes a timestamp to `.inhtml/last-message.txt` for quick polling
+- AI skill instructs: "Before responding, check `.inhtml/pending.txt` for new browser messages"
 - Optional: Server can `touch` a marker file that the AI watches
 
 **Alternative considered**: stdin injection — not possible because the AI agent is a separate process with its own stdin.
@@ -39,7 +39,7 @@ The CLI process (`npx in-html`) and the AI agent are separate processes. They sh
 
 **Mechanism:**
 - Server exposes `GET /~status` returning `{ "state": "idle" | "thinking" | "done", "message": "..." }`
-- State is stored in a file `.in-html/status.json` that the AI writes
+- State is stored in a file `.inhtml/status.json` that the AI writes
 - Browser polls this endpoint on the same SSE event that triggers manifest refresh
 - Or: extend SSE to also broadcast status changes
 

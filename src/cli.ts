@@ -31,6 +31,8 @@ function parseArgs(argv: string[]) {
       result.command = 'init-skill';
     } else if (arg === 'init-hooks') {
       result.command = 'init-hooks';
+    } else if (arg === '-v' || arg === '--version' || arg === 'version') {
+      result.command = 'version';
     } else if (arg === '--port' && i + 1 < args.length) {
       result.port = parseInt(args[++i], 10);
     } else if (arg === '--no-open') {
@@ -251,7 +253,11 @@ function startServer(root: string, port: number, open: boolean) {
 const args = parseArgs(process.argv);
 const root = findProjectRoot();
 
-if (args.command === 'init') {
+if (args.command === 'version') {
+  const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'));
+  console.log(pkg.version);
+  process.exit(0);
+} else if (args.command === 'init') {
   console.log('Initializing inhtml in', root);
   ensureDirectories(root);
   initSkill(root, args.force);

@@ -1,4 +1,4 @@
-# in-html 架构图
+# inhtml 架构图
 
 ```mermaid
 graph TB
@@ -8,7 +8,7 @@ graph TB
         Browser[浏览器]
     end
 
-    subgraph "in-html npm 包"
+    subgraph "inhtml npm 包"
         CLIEntry[src/cli.ts<br/>命令行入口]
         Server[src/server.ts<br/>HTTP 服务器]
         Watcher[src/watcher.ts<br/>文件监听]
@@ -20,18 +20,18 @@ graph TB
     end
 
     subgraph "用户项目目录"
-        DotInHTML[.in-html/]
+        DotInHTML[.inhtml/]
         ManifestJSON[manifest.json]
         Artifacts[artifacts/]
         PendingTXT[pending.txt]
-        SkillTarget[.claude/commands/in-html.md]
+        SkillTarget[.claude/commands/inhtml.md]
     end
 
     subgraph "Claude Code"
         Claude[Claude AI]
     end
 
-    User -->|npx in-html| CLIEntry
+    User -->|npx inhtml| CLIEntry
     CLIEntry -->|解析参数| Root
     Root -->|查找项目根| CLIEntry
     CLIEntry -->|启动| Server
@@ -74,7 +74,7 @@ graph TB
 │                        用户工作流                                │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  1. 用户运行 npx in-html                                        │
+│  1. 用户运行 npx inhtml                                        │
 │     ↓                                                           │
 │  2. 服务器启动，浏览器打开                                        │
 │     ↓                                                           │

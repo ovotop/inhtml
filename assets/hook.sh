@@ -1,6 +1,6 @@
 #!/bin/bash
-# in-html hook script — captures conversation events from Claude Code / OpenCode / Codex
-# Reads JSON from stdin, determines event type, POSTs to in-html server
+# inhtml hook script — captures conversation events from Claude Code / OpenCode / Codex
+# Reads JSON from stdin, determines event type, POSTs to inhtml server
 #
 # Usage: Called automatically by CLI tool hooks
 # Manual test: echo '{"tool_name":"test"}' | ./hook.sh
